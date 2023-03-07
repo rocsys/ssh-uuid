@@ -7,7 +7,7 @@ for in use devcontainer
 
 # Usage
 
-make sure scp (ssh for debug) is installed in the contiainer
+make sure scp (ssh for debian) is installed in the contiainer
 
 copy files of ROC13
 ```
