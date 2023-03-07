@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  dev:
+    build:
+      context: ./
+      target: devserver
+    tty: true
+    stdin_open: true
+    # it is important that you actually have a ~/.aws directory and
+    # aws CLI configured properly
+    volumes:
+      - ~/.balena:/home/node/.balena
+      - ~/.ssh:/home/node/.ssh
+      - .:/home/node/uuid
