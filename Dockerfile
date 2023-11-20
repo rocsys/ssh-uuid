@@ -1,5 +1,5 @@
 # Stage: devserver
-FROM node:14-bullseye as devserver
+FROM node:18-bullseye as devserver
 
 RUN apt-get update && apt-get install jq socat -y
 USER node
