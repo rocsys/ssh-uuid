@@ -2,3 +2,4 @@
 ./ssh-uuid
 ./scp-uuid
 tests/test-config.sh
+node_modules

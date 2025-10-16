@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "balena-cli": "^20.2.10"
+  }
+}
