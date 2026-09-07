@@ -2,7 +2,10 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.195.0/containers/javascript-node
 {
   "name": "scp",
-  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.extend.yml"
+  ],
   "service": "dev",
   // "build": {
   //   "dockerfile": "Dockerfile",
@@ -23,7 +26,10 @@
         "git.postCommitCommand": "push"
       },
       // Add the IDs of extensions you want installed when the container is created.
-      "extensions": ["exiasr.hadolint"]
+      "extensions": [
+        "exiasr.hadolint",
+        "Anthropic.claude-code"
+      ]
     }
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

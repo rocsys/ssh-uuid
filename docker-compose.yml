@@ -12,3 +12,4 @@ services:
       - ~/.balena:/home/node/.balena
       - ~/.ssh:/home/node/.ssh
       - .:/home/node/uuid
+      - ~/.claude:/home/node/.claude

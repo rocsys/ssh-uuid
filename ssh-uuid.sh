@@ -326,15 +326,30 @@ $ scp-uuid -r ${uuid}.balena:/mnt/data/docker/volumes/<fleet-id>_data/_data/remo
 " >/dev/stderr
 }
 
+# Since OpenSSH 9.0 (2022), 'scp' defaults to the SFTP protocol instead of
+# the legacy SCP protocol. Under SFTP, 'scp' invokes its '-S' helper program
+# with '-s sftp' to request a subsystem channel, rather than a plain exec
+# channel running an arbitrary remote command. The '--service' container-exec
+# wrapper below relies on the helper (ssh-uuid, invoked via '-S') being run
+# as a plain command, so it needs 'scp' to speak the legacy protocol via the
+# '-O' flag (also added in OpenSSH 9.0 for this exact back-compat need).
+function scp_supports_dash_O {
+	local ver
+	ver="$(ssh -V 2>&1)"
+	[[ "${ver}" =~ OpenSSH_([0-9]+)\. ]] && (( BASH_REMATCH[1] >= 9 ))
+}
+
 function run_scp {
 	if [ -n "${SSUU_SERVICE}" ]; then
 		if [ -n "${SSUU_FLAG_S}" ]; then
 			quit "The '-S' and '--service' options cannot be used together"
 		fi
 		export SSUU_SERVICE
+		local legacy_proto_flag=()
+		scp_supports_dash_O && legacy_proto_flag=('-O')
 		set +e
 		[ -n "${DEBUG}" ] && set -x
-		scp -S ssh-uuid "${SSUU_OPT_ARGS[@]}" "${SSUU_POS_ARGS[@]}"
+		scp "${legacy_proto_flag[@]}" -S ssh-uuid "${SSUU_OPT_ARGS[@]}" "${SSUU_POS_ARGS[@]}"
 		{ local status="$?"; [ -n "${DEBUG}" ] && set +x; } 2>/dev/null
 		set -e
 		return "${status}"
