@@ -92,6 +92,12 @@ commands to ensure that file is created.
 	local cached_token 
 	cached_username="$(jq -r .username "${cached_usr_file}")"
 	cached_token="$(jq -r .token "${cached_usr_file}")"
+	# Prefer the token written by the latest 'balena login': cachedUsername is only
+	# refreshed by 'balena whoami', so its token may be stale.
+	local token_file="${BALENARC_DATA_DIRECTORY}/token"
+	if [[ -r "${token_file}" && -s "${token_file}" ]]; then
+		cached_token="$(<"${token_file}")"
+	fi
 	BALENA_USERNAME="${BALENA_USERNAME:-"${cached_username}"}"
 	BALENA_TOKEN="${BALENA_TOKEN:-"${cached_token}"}"
 }
